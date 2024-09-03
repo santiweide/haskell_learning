@@ -8,7 +8,7 @@ programming in haskell &amp;&amp; learn you a haskell code repository.
 
 ## How to work with:
 
-``bash
+```bash
 # in a tmux window
 vim foo.hs
 
