@@ -119,6 +119,66 @@ crack xs = casesarEncoder (-step) xs
 
 
 
+-- Exercises
+-- 1. Using a list comprehension, give an expression that calculates the sum of 
+--  1^2, 2^2, .., 100^2 of the first one hundred integer squares.
+
+calcs :: Int -> Int
+-- this is not a list comprehension: calcs n = if n <= 1 then 1 else n * n + calcs (n-1)
+calcs n = sum [i*i | i<-[1..n]]
+
+
+-- grid
+grid :: Int -> Int -> [(Int, Int)]
+grid n m = [(x,y) | x<-[0..n], y<-[0..m] ]
+
+-- square
+square :: Int -> [(Int, Int)]
+square n = [ p | p<-(grid n n), fst p /= snd p]
+
+-- replicate
+replicate2 :: Int -> a -> [a]
+replicate2 0 x = []
+replicate2 n x = [x] ++ replicate2 (n-1) x
+-- list comprehension version:
+replicate3 :: Int -> a -> [a]
+replicate3 n x = [x | i<-[1..n]]
+
+-- pyths
+pyths :: Int -> [(Int, Int, Int)]
+pyths n = [(x,y,z) | x<-[1..n], y<-[1..n], z<-[1..n], x*x+y*y==z*z]
+
+-- factors
+factors :: Int -> [Int]
+factors n = [x| x<-[1..n-1], n `mod` x == 0]
+
+-- perfect
+perfects :: Int -> [Int]
+perfects n = [x | x <- [1..n], (sum (factors x)) == x ]
+
+
+-- re-express
+p=[(x,y) | x <- [1,2], y <- [3,4]]
+q=concat [ [(x,y) | y<- [3,4]] | x<-[1,2] ]
+
+-- find
+-- find v with k in (k,v)
+find :: Eq a => a->[(a,b)] -> [b]
+find a abs = [ y | (x,y) <- abs, x == a]
+
+-- position
+-- Redefine the function positions using the function find
+positions :: Eq a => a -> [a] -> [Int]
+positions t xs = [y | (x,y) <- zip xs [0..n-1], x == t]
+                where n = length xs
+
+
+-- scalarproduct
+scalarproduct :: [Int] -> [Int] -> Int
+scalarproduct xs ys = sum [ x*y | (x,y) <- zip xs ys]
+
+
+
 
 
 
