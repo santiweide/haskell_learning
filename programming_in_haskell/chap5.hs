@@ -48,7 +48,77 @@ getAllLower str = [getLower ch | ch <- str]
 count :: Char -> String -> Int
 count ch str = length [s | s<-str, s == ch]
 
-freq :: String -> [Double]
-freq str = [getPercent (count ch str) (length n) | ch <- ['a'..'z']  ]
+freqs :: String -> [Double]
+freqs str = [getPercent (count ch str) (length n) | ch <- ['a'..'z']  ]
                 where n = getAllLower str
+
+
+-- use chi-square statics to proove the which factor in casear encoder is at the most probability
+-- chi-square:
+-- comparing a list of observed frequency
+--  with a list of expected frequency
+--  sum i=0..n-1, (oes_i-es_i)**2 / es_i
+
+sumOfList :: [Double] -> Double
+sumOfList xs = case xs of
+            [] -> 0.0
+            (x:xxs) -> x + sumOfList xxs
+
+
+
+chisqr :: [Double] -> [Double] -> Double
+chisqr oes es = sumOfList [ (oes !! i - es !! i) ** 2 / es !! i | i <- [0..n-1]]
+                where n = length es
+
+-- extra:
+-- what about 
+-- using the library function zip and a list comprehension 
+-- for a cis-square function implement?
+
+chisqr_v2 :: [Double] -> [Double] -> Double
+chisqr_v2 os es = sum [ (o-e)**2/e | (o,e) <-zip os es]
+
+
+
+-- rotate
+-- make rotate for n step in s String
+rotate :: Int -> [a] -> [a]
+rotate n xs = drop n xs ++ take n xs
+
+
+-- freqs: transfer the shift of alphabet into the shift of list
+--      (clever! but only works in statics
+table :: [Double]
+table = [8.1, 1.5, 2.8, 4.2, 12.7, 2.2, 2.0, 6.1, 7.0, 0.2, 0.8, 4.0, 2.4, 6.7, 7.5, 1.9, 0.1, 6.0, 6.3, 9.0, 2.8, 1.0, 2.4, 0.2, 2.0, 0.1]
+
+table'=freqs "kdvnhoo lv ixq"
+cistable=[chisqr (rotate n table') table | n <- [0..25]]
+
+getMin :: Ord a => [a] -> a
+getMin [] = error "empty list"
+getMin [x] = x
+getMin (x:xs) = min x (getMin xs)
+
+getPos :: Ord a => a -> [a] -> [Int]
+getPos x xs = [i | i <- [0..length xs - 1], xs !! i == x]
+
+getMinPos :: Ord a => [a] -> [Int]
+getMinPos xs = getPos (getMin xs) xs
+
+
+-- how to crack the casear encoded string with unkonwn shifting n
+-- we use crack here to say it is not a 100% right decoding method
+-- Attention! where should have strict table align
+-- Note that when we use head to select a min pos, there is also some uncertainty
+crack :: String -> String
+crack xs = casesarEncoder (-step) xs 
+        where 
+            step     = head (getMinPos chitable)
+            chitable = [chisqr (rotate n table') table | n <- [0..25]]
+            table'   = freqs xs
+
+
+
+
+
 
