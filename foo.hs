@@ -1,3 +1,4 @@
+-- week1 lec1
 -- foo.hs
 f :: Int -> Int
 f x = x * 2
