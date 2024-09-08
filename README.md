@@ -35,6 +35,5 @@ ghci
 So the key point here is that the construct for the newtype is guaranteed to be erased at compile time.
 
 
-2. Difference between type, newtype, data, class
 
-[click me](./docs/differences_type_newtype_data_class.md)
+2. Difference between type, newtype, data, class  - [click me](./docs/differences_type_newtype_data_class.md)
