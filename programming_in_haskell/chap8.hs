@@ -58,7 +58,7 @@ safehead xs = Just (head xs)
 
 -- so useful!
 
--- newrtype
+-- new type
 -- a complete new type is declared by newtype
 -- single constructor with a single arguement
 
