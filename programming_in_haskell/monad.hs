@@ -19,13 +19,22 @@ instance Functor f where
 --Applicatives
 --applicatives allow the functions with any number of arguements to be mapped, rather than being restricted to functions with a single argument.
 
+class Functor where
+    fmap :: (a->b) -> f a -> f b
+
 class Functor f => Applicative f where 
     pure :: a -> f a
     (<*>) :: f (a -> b) -> f a -> f b
 
+class Applicative m => Monad m where
+    return :: a -> m a
+    (>>=) :: m a -> (a -> m b) -> m b
+    return = pure
+
 -- that is, an applicatived data or newtype  must be a Functor
 -- pure and <*> are just defined for the number of arguments of the function could be extended
 
+-- Monadt通过允许用户自定义输入函数，放开了Applicative对类型数量的限制
 
 
 
